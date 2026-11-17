@@ -1,0 +1,152 @@
+<main
+  #film
+  class="film"
+  tabindex="-1"
+  (keydown)="keyDown($event)"
+  [class.started]="started()"
+  [class.final-scene]="scene() === 6"
+  [class.reading]="letterOpen()"
+>
+  <canvas
+    #canvas
+    class="universe-canvas"
+    aria-hidden="true"
+    (pointerdown)="pointerDown($event)"
+    (pointermove)="pointerMove($event)"
+    (pointerup)="pointerUp()"
+    (pointercancel)="pointerUp()"
+    (lostpointercapture)="pointerUp()"
+  ></canvas>
+  <div class="film-grain" aria-hidden="true"></div>
+  <div class="letterbox top" aria-hidden="true"></div>
+  <div class="letterbox bottom" aria-hidden="true"></div>
+
+  @if (unsupported()) {
+    <section class="fallback">
+      <h1>O nosso universo precisa de outra janela.</h1>
+      <p>
+        Este navegador não conseguiu iniciar a animação. Abra o link em uma versão atual do Chrome,
+        Safari, Edge ou Firefox.
+      </p>
+    </section>
+  } @else {
+    @if (!started()) {
+      <section class="prologue">
+        <p class="opening-credit">UMA VIAGEM IMPROVÁVEL · UM DESTINO FAVORITO</p>
+        <div class="intro-bottom">
+          <h1>Não foi só sorte.</h1>
+          <p>uma pequena viagem até nós</p>
+          <button class="enter-film" type="button" (click)="start()">
+            <span class="play-icon" aria-hidden="true">▷</span> entrar nessa história</button
+          ><span class="duration">66 SEGUNDOS FORA DO MUNDO</span>
+        </div>
+      </section>
+    }
+    @if (started()) {
+      <div class="film-tools">
+        <button
+          type="button"
+          class="icon-button"
+          (click)="togglePause()"
+          [attr.aria-label]="paused() ? 'Continuar filme' : 'Pausar filme'"
+          [attr.aria-pressed]="paused()"
+        >
+          <span aria-hidden="true">{{ paused() ? '▷' : 'Ⅱ' }}</span>
+        </button>
+        <button
+          type="button"
+          class="icon-button sound"
+          (click)="toggleSound()"
+          [attr.aria-pressed]="sound()"
+          [attr.aria-label]="sound() ? 'Desativar som' : 'Ativar trilha suave'"
+        >
+          <span aria-hidden="true">{{ sound() ? '♫' : '♪' }}</span><span class="tool-text">{{
+            soundError() ? 'indisponível' : sound() ? 'trilha ligada' : 'ativar som'
+          }}</span>
+        </button>
+      </div>
+      @if (scene() < 6) {
+        <div class="scene-coordinate" aria-hidden="true">
+          {{
+            [
+              '',
+              '01 / IMENSIDÃO',
+              '02 / ÓRBITAS',
+              '03 / INTERFERÊNCIA',
+              '04 / GRAVIDADE',
+              '05 / ENCONTRO',
+            ][scene()]
+          }}
+        </div>
+        <div class="subtitles" aria-live="polite" aria-atomic="true">
+          <p>{{ caption() }}</p>
+        </div>
+        @if (scene() === 1 && !reducedMotion()) {
+          <p class="gesture-hint" [class.engaged]="holding()">
+            {{
+              holding()
+                ? 'é. o coração também acelera.'
+                : 'toque e segure para atravessar as estrelas'
+            }}
+          </p>
+        }
+        @if (scene() === 4 && !connected()) {
+          <button class="connection-hint" type="button" (click)="connected.set(true); advance()">
+            arraste as estrelas, segure a tela ou toque aqui para aproximar
+            <span aria-hidden="true">⟶</span>
+          </button>
+        }
+        @if (paused()) {
+          <div class="pause-state">
+            <span>O universo pode esperar.</span
+            ><button type="button" (click)="togglePause()">continuar ▷</button>
+          </div>
+        }
+        <button class="skip-scene" type="button" (click)="advance()" aria-label="Avançar cena">
+          pular cena <span aria-hidden="true">↗</span>
+        </button>
+      } @else {
+        @if (!letterOpen()) {
+          <section class="epilogue">
+            <p class="end-credit">EM QUALQUER UNIVERSO.</p>
+            <h1>{{ story.title }}</h1>
+            <p class="dedication">{{ story.invitation }}</p>
+            <button class="last-message" type="button" (click)="letterOpen.set(true)">
+              tem uma última coisa <span aria-hidden="true">↗</span>
+            </button>
+          </section>
+        } @else {
+          <section class="letter" aria-label="Carta de amor">
+            <span class="letter-star" aria-hidden="true">✦</span>
+            <h1>Em todas as vidas, você.</h1>
+            <p>{{ story.letter }}</p>
+            <p class="signature">{{ story.signature }}</p>
+            <button type="button" class="restart" (click)="restart()">
+              ↺ viver esse encontro de novo
+            </button>
+          </section>
+        }
+      }
+      <div
+        class="timeline"
+        role="progressbar"
+        aria-label="Progresso do filme"
+        [attr.aria-valuenow]="progress()"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        <span [style.width.%]="progress()"></span>
+      </div>
+    }
+  }
+  @if (!started() && !unsupported()) {
+    <button
+      class="initial-sound"
+      type="button"
+      (click)="toggleSound()"
+      [attr.aria-pressed]="sound()"
+    >
+      {{ soundError() ? 'som indisponível' : sound() ? '♫ trilha ligada' : '♪ trilha suave' }}
+    </button>
+  }
+</main>

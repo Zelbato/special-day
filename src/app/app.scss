@@ -1,0 +1,520 @@
+:host {
+  display: block;
+  background: #05070e;
+}
+.film {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 480px;
+  overflow: hidden;
+  background: #05070e;
+  color: #eee5d4;
+  isolation: isolate;
+  outline: none;
+}
+.universe-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  transition:
+    filter 2s,
+    opacity 2s;
+}
+.film-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
+}
+.letterbox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5%;
+  background: #020308;
+  z-index: 5;
+  pointer-events: none;
+}
+.letterbox.top {
+  top: 0;
+}
+.letterbox.bottom {
+  bottom: 0;
+}
+.prologue {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  text-align: center;
+}
+.opening-credit {
+  position: absolute;
+  top: 11%;
+  width: 100%;
+  padding: 0 25px;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: #bdb3a2;
+  animation: appear 2s both;
+}
+.intro-bottom {
+  position: absolute;
+  bottom: 12%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  animation: appear 2s 0.4s both;
+}
+h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: clamp(35px, 4.5vw, 65px);
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+  margin: 0;
+  text-wrap: balance;
+}
+.intro-bottom > p {
+  font:
+    italic 15px Georgia,
+    serif;
+  color: #b0a99d;
+  letter-spacing: 0.02em;
+  margin: 15px 0 22px;
+}
+button {
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+}
+.enter-film {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 50px;
+  padding: 8px 22px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  transition: color 0.3s;
+}
+.play-icon {
+  font-size: 23px;
+  color: #d9b78c;
+}
+.enter-film:hover {
+  color: #eac18e;
+}
+.duration {
+  margin-top: 18px;
+  font-size: 7px;
+  letter-spacing: 0.3em;
+  color: #8c8c90;
+}
+.initial-sound {
+  position: absolute;
+  z-index: 6;
+  bottom: 6.5%;
+  right: 4%;
+  min-height: 44px;
+  color: #b8b0a2;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 10px;
+}
+.film-tools {
+  position: absolute;
+  top: 7%;
+  right: 4%;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.icon-button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  color: #c6bdad;
+  font-size: 20px;
+  opacity: 0.8;
+}
+.icon-button:hover {
+  opacity: 1;
+}
+.tool-text {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+.scene-coordinate {
+  position: absolute;
+  top: 9%;
+  left: 5%;
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  color: #aaa49b;
+  pointer-events: none;
+}
+.subtitles {
+  position: absolute;
+  bottom: 17%;
+  left: 10%;
+  width: 80%;
+  text-align: center;
+  pointer-events: none;
+}
+.subtitles p {
+  font:
+    400 clamp(19px, 2.4vw, 31px)/1.5 Georgia,
+    serif;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  max-width: 700px;
+  margin: 0 auto;
+  color: #eee4d4;
+  text-shadow: 0 2px 20px #000;
+}
+.gesture-hint,
+.connection-hint {
+  position: absolute;
+  bottom: 9.5%;
+  left: 15%;
+  width: 70%;
+  text-align: center;
+  font-size: 10px;
+  color: #c1b6a1;
+  letter-spacing: 0.07em;
+  margin: 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.gesture-hint {
+  pointer-events: none;
+  opacity: 0.7;
+}
+.gesture-hint.engaged {
+  color: #ecc895;
+  opacity: 1;
+}
+.connection-hint {
+  font-size: 10px;
+  line-height: 1.6;
+}
+.connection-hint span {
+  font-size: 23px;
+}
+.skip-scene {
+  position: absolute;
+  bottom: 5.5%;
+  right: 4%;
+  min-height: 44px;
+  font-size: 9px;
+  color: #b4b0a7;
+  letter-spacing: 0.06em;
+}
+.skip-scene span {
+  margin-left: 7px;
+}
+.timeline {
+  height: 1px;
+  position: absolute;
+  bottom: 5%;
+  left: 0;
+  right: 0;
+  z-index: 7;
+  background: #ffffff0a;
+}
+.timeline span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #705746, #dfba86);
+  box-shadow: 0 0 8px #dfba8644;
+}
+.pause-state {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  backdrop-filter: blur(7px);
+  background: #020308aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+.pause-state span {
+  font:
+    italic 25px Georgia,
+    serif;
+}
+.pause-state button {
+  min-height: 44px;
+  padding: 10px 20px;
+  color: #d8ba91;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+.epilogue {
+  position: absolute;
+  bottom: 12%;
+  left: 10%;
+  width: 80%;
+  text-align: center;
+  animation: appear 2s both;
+}
+.end-credit {
+  font-size: 8px;
+  letter-spacing: 0.35em;
+  color: #c3a984;
+  margin-bottom: 20px;
+}
+.epilogue h1 {
+  font-size: clamp(35px, 5vw, 66px);
+}
+.dedication {
+  font:
+    italic 15px/1.6 Georgia,
+    serif;
+  color: #d0bda5;
+  margin: 18px 0 15px;
+}
+.last-message {
+  min-height: 44px;
+  padding: 10px 15px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #cbb899;
+}
+.last-message span {
+  margin-left: 13px;
+}
+.reading .universe-canvas {
+  filter: blur(12px);
+  opacity: 0.25;
+}
+.letter {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 90px 25px 70px;
+  text-align: center;
+  animation: appear 1.5s both;
+  overflow-y: auto;
+}
+.letter-star {
+  color: #d5b27d;
+  font-size: 22px;
+  margin-bottom: 28px;
+}
+.letter h1 {
+  font-size: clamp(30px, 4vw, 46px);
+}
+.letter > p {
+  max-width: 520px;
+  color: #cfc3b3;
+  font:
+    17px/2 Georgia,
+    serif;
+  margin: 28px auto 0;
+  text-wrap: pretty;
+}
+.letter .signature {
+  font-size: 14px;
+  font-style: italic;
+  color: #c3a782;
+  margin-top: 26px;
+}
+.restart {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: #b6a48b;
+  margin-top: 30px;
+  min-height: 44px;
+  padding: 10px 20px;
+}
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  text-align: center;
+  padding: 30px;
+}
+.fallback h1 {
+  font-size: 30px;
+}
+.fallback p {
+  line-height: 1.8;
+  max-width: 480px;
+  margin: 20px auto;
+  color: #b8b0a2;
+}
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 600px) {
+  .opening-credit {
+    font-size: 7px;
+    line-height: 2;
+    top: 11%;
+    letter-spacing: 0.2em;
+  }
+  .intro-bottom {
+    bottom: 13%;
+  }
+  .intro-bottom h1 {
+    font-size: 40px;
+  }
+  .intro-bottom > p {
+    font-size: 14px;
+  }
+  .duration {
+    font-size: 6px;
+  }
+  .film-tools {
+    right: 4%;
+    top: 6%;
+  }
+  .scene-coordinate {
+    top: 9%;
+    font-size: 6px;
+    letter-spacing: 0.15em;
+  }
+  .subtitles {
+    left: 8%;
+    width: 84%;
+    bottom: 20%;
+  }
+  .subtitles p {
+    font-size: 22px;
+    line-height: 1.55;
+  }
+  .gesture-hint,
+  .connection-hint {
+    font-size: 9px;
+    width: 80%;
+    left: 10%;
+    bottom: 11%;
+    letter-spacing: 0.03em;
+  }
+  .epilogue {
+    bottom: 12%;
+    left: 8%;
+    width: 84%;
+  }
+  .epilogue h1 {
+    font-size: 38px;
+  }
+  .end-credit {
+    font-size: 7px;
+    margin-bottom: 17px;
+  }
+  .dedication {
+    font-size: 13px;
+  }
+  .letter > p {
+    font-size: 15px;
+    line-height: 1.9;
+    margin-top: 22px;
+  }
+  .letter .signature {
+    font-size: 12px;
+  }
+  .letter-star {
+    margin-bottom: 20px;
+  }
+  .letter h1 {
+    font-size: 32px;
+  }
+  .tool-text {
+    font-size: 8px;
+  }
+  .initial-sound {
+    font-size: 9px;
+  }
+  .letter {
+    padding: 90px 30px 60px;
+  }
+}
+@media (max-height: 620px) {
+  .film {
+    min-height: 460px;
+  }
+  .opening-credit {
+    top: 8%;
+  }
+  .intro-bottom {
+    bottom: 8%;
+  }
+  .intro-bottom h1 {
+    font-size: 30px;
+  }
+  .intro-bottom > p {
+    margin: 10px 0;
+  }
+  .duration {
+    margin-top: 6px;
+  }
+  .subtitles {
+    bottom: 18%;
+  }
+  .subtitles p {
+    font-size: 21px;
+  }
+  .gesture-hint,
+  .connection-hint {
+    bottom: 8%;
+  }
+  .epilogue {
+    bottom: 9%;
+  }
+  .epilogue h1 {
+    font-size: 31px;
+  }
+  .letter {
+    justify-content: flex-start;
+    padding-top: 72px;
+  }
+  .letter-star {
+    margin-bottom: 13px;
+  }
+  .letter > p {
+    font-size: 14px;
+  }
+  .restart {
+    margin-top: 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

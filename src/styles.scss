@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100%;
+  background: #05070e;
+}
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible {
+  outline: 2px solid #dcb98b;
+  outline-offset: 5px;
+  border-radius: 3px;
+}
+::selection {
+  background: #907152;
+  color: #fff4df;
+}
